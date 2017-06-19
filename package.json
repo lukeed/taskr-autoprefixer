@@ -1,6 +1,6 @@
 {
   "name": "taskr-autoprefixer",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "PostCSS Autoprefixer plugin for Taskr",
   "repository": "lukeed/taskr-autoprefixer",
   "main": "index.js",
