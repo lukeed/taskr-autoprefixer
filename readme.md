@@ -1,10 +1,10 @@
-# taskr-autoprefixer
+# taskr-autoprefixer [![TravisCI](http://img.shields.io/travis/lukeed/taskr-autoprefixer.svg?style=flat-square)](https://travis-ci.org/lukeed/taskr-autoprefixer) [![npm](https://img.shields.io/npm/v/taskr-autoprefixer.svg?style=flat-square)](https://npmjs.org/package/taskr-autoprefixer)
 
-> Autoprefixer plugin for [Taskr](https://github.com/lukeed/taskr).
+> PostCSS [Autoprefixer](https://github.com/postcss/autoprefixer) plugin for [Taskr](https://github.com/lukeed/taskr).
 
-[![npm package][npm-ver-link]][releases]
-[![][dl-badge]][npm-pkg-link]
-[![][travis-badge]][travis-link]
+This is a merely convenience layer for PostCSS + Autoprefixer.
+
+You may elect to use [`@taskr/postcss`](https://github.com/lukeed/taskr/tree/master/packages/postcss) and `require('autoprefixer')` instead. In fact, you probably _should_ if you're using other PostCSS plugins!
 
 ## Install
 
@@ -14,41 +14,26 @@ npm install --save-dev taskr-autoprefixer
 
 ## Usage
 
-
 ```js
 exports.default = function * (task) {
-  yield task.source('src/*.js').autoprefixer().target('dist')
+  yield task.source('src/**/*.sass')
+    .sass()
+    .autoprefixer({
+      browsers: ['last 5 versions']
+    })
+    .target('dist/css');
 }
 ```
 
+> **Note:** If using a CSS preprocessing tool (eg: SASS, Stylus, LESS), `autoprefixer()` must be invoked _after_ the CSS has been compiled.
+
 ## API
 
-### .autoprefixer(input, options)
+### .autoprefixer(options)
 
-> Check out the [documentation](PLUGIN_DOCUMENTATION) to see the available options.
-
-#### input
-
-Type: `string`<br>
-Default: 'foobar'
-
-This is a description.
-
-#### options.foo
-
-Type: `boolean`<br>
-Default: `false`
-
-This is a description.
+This plugin does not have any custom options. Please visit [`autoprefixer` options](https://github.com/postcss/autoprefixer#options) for a full list of available options.
 
 
 ## License
 
 MIT © [Luke Edwards](https://lukeed.com)
-
-[releases]:     https://github.com/lukeed/taskr-autoprefixer/releases
-[npm-pkg-link]: https://www.npmjs.org/package/taskr-autoprefixer
-[npm-ver-link]: https://img.shields.io/npm/v/taskr-autoprefixer.svg?style=flat-square
-[dl-badge]:     http://img.shields.io/npm/dm/taskr-autoprefixer.svg?style=flat-square
-[travis-link]:  https://travis-ci.org/lukeed/taskr-autoprefixer
-[travis-badge]: http://img.shields.io/travis/lukeed/taskr-autoprefixer.svg?style=flat-square
