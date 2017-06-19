@@ -1,30 +1,33 @@
-const foo = require('foo');
+'use strict';
 
-/**
- * Documentation: Writing Plugins
- * @see https://github.com/lukeed/taskr#plugin
- * @see https://github.com/lukeed/taskr#external-plugins
- */
-module.exports = function (task, utils) {
-	// promisify before running else repeats per execution
-	const render = utils.promisify(foo.bar);
+const postcss = require('postcss');
+const prefixer = require('autoprefixer');
 
-	// Option #1
-	task.plugin('autoprefixer', {/* every:true, files:true */}, function * (file, opts) {
-		console.log('a single file object', file); //=> { base, dir, data }
-		console.log('user-provided config', opts); //=> null || {}
-		yield render(opts);
-	});
+// default config
+const browsers = [
+	'ie >= 10',
+	'ie_mob >= 10',
+	'ff >= 30',
+	'chrome >= 34',
+	'safari >= 7',
+	'opera >= 23',
+	'ios >= 7',
+	'android >= 4.4',
+	'bb >= 10'
+];
 
-	// Option #2
-	/*
-		task.plugin({
-			name: 'autoprefixer',
-			every: true,
-			files: true,
-			*func(file, opts) {
-				// ...same
-			}
-		});
-	 */
+module.exports = {
+	every: false,
+	name: 'autoprefixer',
+	* func(files, opts) {
+		opts = Object.assign({ browsers }, opts);
+		const ctx = postcss([ prefixer(opts) ]);
+
+		for (const file of files) {
+			// process with postcss + prefixer
+			const data = yield ctx.process(file.data);
+			// update file's content
+			file.data = data.css;
+		}
+	}
 };
